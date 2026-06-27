@@ -139,25 +139,3 @@ This creates the default admin account. Open the file first to set your preferre
 2. Set up the database as described above
 3. Start your web server and MySQL service
 4. Open `http://localhost/hand2hand/` in your browser
-
----
-
-## Team
-
-Built as part of a web development project at **ISAMM, Université de la Manouba** (2024–2025).
-
-| Name | Role |
-|---|---|
-| Jihed | Lead Developer |
-| Mahoud Gharbi | Developer |
-| Tasnim Baccouri | Developer |
-| Yomna Mekni | Developer |
-| Yassmine Ben Mefteh | Developer |
-
-Supervised by **Mme. Ghofrane Kraiem**.
-
----
-
-## License
-
-This project was made for academic purposes.
