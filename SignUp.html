@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hand2Hand | Create Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --green: #10b981; --green-d: #059669; }
+
+    #page-overlay {
+      position: fixed; inset: 0; background: var(--green);
+      z-index: 9999; clip-path: circle(0% at 50% 50%); pointer-events: none;
+    }
+    #page-overlay.enter { animation: circleIn  .5s  cubic-bezier(.76,0,.24,1) forwards; }
+    #page-overlay.exit  { animation: circleOut .45s cubic-bezier(.76,0,.24,1) forwards; }
+    @keyframes circleIn  { to   { clip-path: circle(150% at 50% 50%); } }
+    @keyframes circleOut { from { clip-path: circle(150% at 50% 50%); } to { clip-path: circle(0% at 50% 50%); } }
+
+    body {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 40px 20px; font-family: 'DM Sans', system-ui, sans-serif; color: white;
+      background: linear-gradient(rgba(10,15,28,.78), rgba(10,15,28,.78)),
+                  url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=2070');
+      background-size: cover; background-attachment: fixed; position: relative;
+    }
+
+    .card {
+      width: 100%; max-width: 580px;
+      background: rgba(17,24,39,.72); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.08); border-radius: 28px;
+      padding: 48px 44px; box-shadow: 0 30px 60px rgba(0,0,0,.5);
+      animation: cardIn .6s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes cardIn { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+
+    .logo { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 32px; text-decoration: none; color: white; }
+    .logo-heart { background: var(--green); padding: 5px 11px; border-radius: 6px; font-size: .85rem; }
+    .logo strong { font-family: 'DM Sans', system-ui, sans-serif; font-size: 1rem; }
+
+    h2 { font-family: 'DM Sans', system-ui, sans-serif; font-size: 1.9rem; font-weight: 800; text-align: center; margin-bottom: 6px; }
+    h2 span { color: var(--green); }
+    .subtitle { text-align: center; color: rgba(255,255,255,.4); font-size: .85rem; margin-bottom: 30px; }
+
+    /* tabs */
+    input[type="radio"] { display: none; }
+    .tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 28px; }
+    .tabs label {
+      cursor: pointer; padding: 9px 24px; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.45); font-size: .72rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; transition: all .25s;
+    }
+    #tab-user:checked ~ .tabs label[for="tab-user"],
+    #tab-association:checked ~ .tabs label[for="tab-association"] {
+      background: rgba(16,185,129,.15); border-color: var(--green); color: white;
+    }
+
+    /* form */
+    .form-container { display: flex; flex-direction: column; gap: 10px; }
+    .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%; padding: 14px 18px; border-radius: 12px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09);
+      color: white; font-family: 'DM Sans', system-ui, sans-serif; font-size: .9rem;
+      outline: none; transition: border-color .25s, background .25s;
+    }
+    input:focus { border-color: var(--green); background: rgba(255,255,255,.07); }
+    input.invalid { border-color: #f87171; background: rgba(248,113,113,.05); }
+    .error-msg { color: #f87171; font-size: .7rem; font-weight: 600; min-height: 16px; display: block; margin: 3px 0 4px 4px; }
+
+    .association-only { display: none; flex-direction: column; gap: 10px; }
+    #tab-association:checked ~ form .association-only { display: flex; }
+
+    .btn-submit {
+      margin-top: 8px; background: var(--green); color: white; border: none;
+      padding: 15px; border-radius: 50px;
+      font-weight: 700; font-size: .85rem; letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer; transition: background .25s, transform .2s, box-shadow .2s;
+    }
+    .btn-submit:hover { background: var(--green-d); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16,185,129,.35); }
+
+    .divider { border: none; border-top: 1px solid rgba(255,255,255,.07); margin: 20px 0; }
+    .footer-text { text-align: center; color: rgba(255,255,255,.4); font-size: .82rem; }
+    .footer-text a { color: white; font-weight: 700; text-decoration: none; transition: color .2s; }
+    .footer-text a:hover { color: var(--green); }
+
+    @media (max-width: 480px) { .name-row { grid-template-columns: 1fr; } .card { padding: 36px 24px; } }
+  </style>
+</head>
+<body>
+<div id="page-overlay"></div>
+
+<div class="card">
+  <a href="index.html" class="logo nav-link-transition">
+    <span class="logo-heart">❤</span>
+    <strong>Hand2Hand</strong>
+  </a>
+  <h2>Create Your <span>Account</span></h2>
+  <p class="subtitle">Join thousands making a difference in Tunisia</p>
+
+  <input type="radio" id="tab-user" name="role_toggle" checked onchange="updateRole('user')">
+  <input type="radio" id="tab-association" name="role_toggle" onchange="updateRole('association')">
+
+  <div class="tabs">
+    <label for="tab-user">User</label>
+    <label for="tab-association">Association</label>
+  </div>
+
+  <form id="signupForm" action="process_signup.php" method="POST" class="form-container">
+    <input type="hidden" name="account_type" id="account_type" value="user">
+
+    <div class="name-row">
+      <div>
+        <input type="text" name="first_name" id="first_name" placeholder="First Name">
+        <span class="error-msg" id="err-first_name"></span>
+      </div>
+      <div>
+        <input type="text" name="last_name" id="last_name" placeholder="Last Name">
+        <span class="error-msg" id="err-last_name"></span>
+      </div>
+    </div>
+
+    <div>
+      <input type="email" name="email" id="email" placeholder="Email Address">
+      <span class="error-msg" id="err-email"></span>
+    </div>
+    <div>
+      <input type="password" name="password" id="password" placeholder="Password">
+      <span class="error-msg" id="err-password"></span>
+    </div>
+
+    <div class="name-row">
+      <div>
+        <input type="text" name="phone" id="phone" placeholder="Phone Number">
+        <span class="error-msg" id="err-phone"></span>
+      </div>
+      <div>
+        <input type="text" name="city" id="city" placeholder="City">
+        <span class="error-msg" id="err-city"></span>
+      </div>
+    </div>
+
+    <div>
+      <input type="text" name="address" id="address" placeholder="Full Address">
+      <span class="error-msg" id="err-address"></span>
+    </div>
+
+    <div class="association-only">
+      <div>
+        <input type="text" name="assoc_name" id="assoc_name" placeholder="Association Name">
+        <span class="error-msg" id="err-assoc_name"></span>
+      </div>
+      <div>
+        <input type="text" name="reg_number" id="reg_number" placeholder="Registration Number">
+        <span class="error-msg" id="err-reg_number"></span>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Create Account</button>
+  </form>
+
+  <hr class="divider">
+  <p class="footer-text">Already have an account? <a href="login.html" class="nav-link-transition" style="margin-left:4px">Sign In</a></p>
+</div>
+
+<script>
+  const overlay = document.getElementById('page-overlay');
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href]');
+    if (!link || !overlay) return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+    e.preventDefault();
+    overlay.classList.remove('exit');
+    overlay.classList.add('enter');
+    setTimeout(() => { window.location.href = href; }, 480);
+  });
+  window.addEventListener('load', () => {
+    overlay.classList.remove('enter');
+    overlay.classList.add('exit');
+    setTimeout(() => overlay.classList.remove('exit'), 460);
+  });
+
+  function updateRole(role) {
+    document.getElementById('account_type').value = role;
+    const a = document.getElementById('assoc_name');
+    const r = document.getElementById('reg_number');
+    if (role === 'association') { a.setAttribute('required','true'); r.setAttribute('required','true'); }
+    else { a.removeAttribute('required'); r.removeAttribute('required'); }
+  }
+
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if (el) el.classList.add('invalid');
+    if (err) err.innerText = msg;
+  }
+
+  document.getElementById('signupForm').addEventListener('submit', function(e) {
+    let valid = true;
+    document.querySelectorAll('.error-msg').forEach(el => el.innerText = '');
+    document.querySelectorAll('input[type="text"],input[type="email"],input[type="password"]').forEach(el => el.classList.remove('invalid'));
+
+    const nameRe = /^[A-Za-z\s]+$/;
+    if (!nameRe.test(document.getElementById('first_name').value)) { showError('first_name','Letters only'); valid=false; }
+    if (!nameRe.test(document.getElementById('last_name').value))  { showError('last_name','Letters only');  valid=false; }
+
+    const email = document.getElementById('email');
+    if (!email.value.includes('@') || email.value.length < 5) { showError('email','Enter a valid email'); valid=false; }
+
+    const pass = document.getElementById('password');
+    if (pass.value.length < 6) { showError('password','Minimum 6 characters'); valid=false; }
+
+    const phone = document.getElementById('phone');
+    if (!/^[0-9]{8}$/.test(phone.value)) { showError('phone','Must be exactly 8 digits'); valid=false; }
+
+    if (document.getElementById('account_type').value === 'association') {
+      if (!document.getElementById('assoc_name').value.trim()) { showError('assoc_name','Required for associations'); valid=false; }
+      if (!document.getElementById('reg_number').value.trim())  { showError('reg_number','Required for associations');  valid=false; }
+    }
+
+    if (!valid) e.preventDefault();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hand2Hand | Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green:   #10b981;
+      --green-d: #059669;
+      --navy:    #0a0f1c;
+    }
+
+    /* PAGE TRANSITION */
+    #page-overlay {
+      position: fixed; inset: 0;
+      background: var(--green);
+      z-index: 9999;
+      clip-path: circle(0% at 50% 50%);
+      pointer-events: none;
+    }
+    #page-overlay.enter { animation: circleIn  .5s  cubic-bezier(.76,0,.24,1) forwards; }
+    #page-overlay.exit  { animation: circleOut .45s cubic-bezier(.76,0,.24,1) forwards; }
+    @keyframes circleIn  { to   { clip-path: circle(150% at 50% 50%); } }
+    @keyframes circleOut { from { clip-path: circle(150% at 50% 50%); } to { clip-path: circle(0% at 50% 50%); } }
+
+    body {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 24px; font-family: 'DM Sans', system-ui, sans-serif; color: white;
+      background: linear-gradient(rgba(10,15,28,.78), rgba(10,15,28,.78)),
+                  url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=2070');
+      background-size: cover; background-attachment: fixed;
+    }
+
+    .card {
+      width: 100%; max-width: 460px;
+      background: rgba(17,24,39,.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 28px; padding: 48px 44px;
+      box-shadow: 0 30px 60px rgba(0,0,0,.5);
+      animation: cardIn .6s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes cardIn { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+
+    .logo { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 36px; text-decoration: none; color: white; }
+    .logo-heart { background: var(--green); padding: 5px 11px; border-radius: 6px; font-size: .85rem; }
+    .logo strong { font-family: 'DM Sans', system-ui, sans-serif; font-size: 1rem; }
+
+    h1 { font-family: 'DM Sans', system-ui, sans-serif; font-size: 1.9rem; font-weight: 800; text-align: center; margin-bottom: 6px; }
+    h1 span { color: var(--green); }
+    .subtitle { text-align: center; color: rgba(255,255,255,.45); font-size: .85rem; margin-bottom: 32px; }
+
+    /* Role tabs */
+    .role-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; }
+    .role-btn {
+      padding: 9px 22px; border-radius: 50px; border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.03); color: rgba(255,255,255,.45);
+      font-size: .72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all .25s;
+    }
+    .role-btn.active { background: rgba(16,185,129,.15); border-color: var(--green); color: white; }
+
+    /* Inputs */
+    .field { margin-bottom: 4px; }
+    .glass-input {
+      width: 100%; padding: 14px 18px; border-radius: 12px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09);
+      color: white; font-family: 'DM Sans', system-ui, sans-serif; font-size: .9rem;
+      outline: none; transition: border-color .25s, background .25s;
+    }
+    .glass-input:focus { border-color: var(--green); background: rgba(255,255,255,.07); }
+    .glass-input.invalid { border-color: #f87171; background: rgba(248,113,113,.05); }
+    .error-msg { color: #f87171; font-size: .7rem; font-weight: 600; letter-spacing: .5px; min-height: 18px; display: block; margin: 4px 0 8px 4px; }
+
+    .btn-submit {
+      width: 100%; margin-top: 8px;
+      background: var(--green); color: white; border: none;
+      padding: 15px; border-radius: 50px;
+      font-weight: 700; font-size: .85rem; letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer; transition: background .25s, transform .2s, box-shadow .2s;
+    }
+    .btn-submit:hover { background: var(--green-d); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16,185,129,.35); }
+
+    .footer-text { text-align: center; margin-top: 28px; color: rgba(255,255,255,.4); font-size: .82rem; }
+    .footer-text a { color: white; font-weight: 700; text-decoration: none; transition: color .2s; }
+    .footer-text a:hover { color: var(--green); }
+
+    .divider { border: none; border-top: 1px solid rgba(255,255,255,.07); margin: 24px 0; }
+  </style>
+</head>
+<body>
+<div id="page-overlay"></div>
+
+<div class="card">
+  <a href="index.html" class="logo nav-link-transition">
+    <span class="logo-heart">❤</span>
+    <strong>Hand2Hand</strong>
+  </a>
+
+  <h1>Welcome <span>Back</span></h1>
+  <p class="subtitle">Sign in to continue your impact</p>
+
+  <div class="role-tabs">
+    <button type="button" class="role-btn active" onclick="switchRole('user')" id="role-user">User</button>
+    <button type="button" class="role-btn" onclick="switchRole('association')" id="role-association">Association</button>
+    <button type="button" class="role-btn" onclick="switchRole('admin')" id="role-admin">Admin</button>
+  </div>
+
+  <form id="login-form" method="POST" action="process_login.php">
+    <input type="hidden" name="account_type" id="account_type" value="user">
+
+    <div class="field">
+      <input type="email" name="email" id="email" placeholder="Email Address" class="glass-input">
+      <span class="error-msg" id="err-email"></span>
+    </div>
+    <div class="field">
+      <input type="password" name="password" id="pass" placeholder="Password" class="glass-input">
+      <span class="error-msg" id="err-pass"></span>
+    </div>
+
+    <button type="submit" class="btn-submit">Sign In</button>
+  </form>
+
+  <hr class="divider">
+
+  <p class="footer-text">
+    Don't have an account?
+    <a href="SignUp.html" class="nav-link-transition" style="margin-left:4px">Create Account</a>
+  </p>
+</div>
+
+<script>
+  const overlay = document.getElementById('page-overlay');
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href]');
+    if (!link || !overlay) return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+    e.preventDefault();
+    overlay.classList.remove('exit');
+    overlay.classList.add('enter');
+    setTimeout(() => { window.location.href = href; }, 480);
+  });
+  window.addEventListener('load', () => {
+    overlay.classList.remove('enter');
+    overlay.classList.add('exit');
+    setTimeout(() => overlay.classList.remove('exit'), 460);
+  });
+
+  function switchRole(role) {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('role-' + role).classList.add('active');
+    document.getElementById('account_type').value = role;
+  }
+
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    let valid = true;
+    document.querySelectorAll('.error-msg').forEach(m => m.innerText = '');
+    document.querySelectorAll('.glass-input').forEach(i => i.classList.remove('invalid'));
+
+    const email = document.getElementById('email');
+    const pass  = document.getElementById('pass');
+
+    if (!email.value.includes('@') || email.value.length < 5) {
+      showErr('email', 'Enter a valid email address'); valid = false;
+    }
+    if (!pass.value.trim()) {
+      showErr('pass', 'Password cannot be empty'); valid = false;
+    }
+    if (!valid) e.preventDefault();
+  });
+
+  function showErr(id, msg) {
+    document.getElementById(id).classList.add('invalid');
+    document.getElementById('err-' + id).innerText = msg;
+  }
+</script>
+</body>
+</html>

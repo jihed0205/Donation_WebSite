@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hand2Hand | Charity</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green:    #10b981;
+      --green-d:  #059669;
+      --navy:     #0a0f1c;
+      --navy-2:   #0d1526;
+      --navy-3:   #112240;
+      --slate:    #a8b2d1;
+      --white:    #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── PAGE TRANSITION OVERLAY ── */
+    #page-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--green);
+      z-index: 9999;
+      clip-path: circle(0% at 50% 50%);
+      pointer-events: none;
+    }
+    #page-overlay.slide-in  { animation: circleIn .5s cubic-bezier(.76,0,.24,1) forwards; }
+    #page-overlay.slide-out { animation: circleOut .45s cubic-bezier(.76,0,.24,1) forwards; }
+    
+    
+
+    /* ── HEADER ── */
+    .main-header {
+      position: fixed; top: 0; width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 7%;
+      z-index: 100;
+      transition: background .4s, box-shadow .4s;
+    }
+    .main-header.scrolled {
+      background: rgba(10,15,28,.92);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 rgba(255,255,255,.06);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
+    .logo-heart {
+      background: var(--green); color: white;
+      padding: 5px 11px; border-radius: 6px;
+      font-size: .9rem; transition: transform .3s;
+    }
+    .logo:hover .logo-heart { transform: scale(1.15) rotate(-5deg); }
+    .logo strong { font-family: 'DM Sans', system-ui, sans-serif; font-size: 1.1rem; }
+
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links a {
+      text-decoration: none; color: var(--slate);
+      font-size: .75rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links .btn-nav {
+      background: var(--green); color: white;
+      padding: 9px 22px; border-radius: 50px;
+      font-size: .75rem; font-weight: 700; letter-spacing: 1px;
+      transition: background .25s, transform .2s, box-shadow .2s;
+    }
+    .nav-links .btn-nav:hover {
+      background: var(--green-d);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16,185,129,.35);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; overflow: hidden;
+    }
+    .hero-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(30%);
+      transform: scale(1.05);
+      animation: heroZoom 12s ease-in-out infinite alternate;
+    }
+    @keyframes heroZoom { to { transform: scale(1); } }
+
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow {
+      display: inline-block;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-size: .7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      padding: 6px 18px; border-radius: 50px; margin-bottom: 28px;
+      opacity: 0; animation: fadeUp .7s .3s forwards;
+    }
+    .hero-content h2 {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      font-weight: 800; line-height: 1.05;
+      opacity: 0; animation: fadeUp .7s .5s forwards;
+    }
+    .hero-content h2 .line2 { color: var(--green); display: block; }
+    .hero-sub {
+      margin-top: 20px; color: var(--slate);
+      font-size: 1rem; font-weight: 300; letter-spacing: .5px;
+      opacity: 0; animation: fadeUp .7s .7s forwards;
+    }
+    .hero-actions {
+      margin-top: 40px; display: flex; gap: 16px; justify-content: center;
+      opacity: 0; animation: fadeUp .7s .9s forwards;
+    }
+    .btn-primary {
+      background: var(--green); color: white;
+      padding: 14px 36px; border-radius: 50px; border: none;
+      font-weight: 700; font-size: .85rem; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; text-decoration: none;
+      transition: background .25s, transform .2s, box-shadow .2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--green-d); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(16,185,129,.4); }
+    .btn-ghost {
+      background: transparent; color: white;
+      padding: 14px 36px; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,.2);
+      font-weight: 600; font-size: .85rem; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; text-decoration: none;
+      transition: border-color .25s, transform .2s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--green); transform: translateY(-3px); }
+
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--slate); font-size: .65rem; letter-spacing: 2px; text-transform: uppercase;
+      opacity: 0; animation: fadeUp .7s 1.2s forwards;
+      z-index: 2;
+    }
+    .scroll-hint span { width: 1px; height: 50px; background: linear-gradient(var(--green), transparent); animation: scrollLine 1.5s ease-in-out infinite; }
+    @keyframes scrollLine { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: var(--green);
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      text-align: center; padding: 32px 0;
+    }
+    .stat-item { padding: 10px 0; border-right: 1px solid rgba(255,255,255,.2); }
+    .stat-item:last-child { border: none; }
+    .stat-num { font-family: 'DM Sans', system-ui, sans-serif; font-size: 2.2rem; font-weight: 800; line-height: 1; }
+    .stat-label { font-size: .7rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; opacity: .8; margin-top: 4px; }
+
+    /* ── ABOUT ── */
+    .about-section { padding: 120px 7%; background: var(--navy-2); }
+    .section-eyebrow {
+      color: var(--green); font-size: .7rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'DM Sans', system-ui, sans-serif; font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800; line-height: 1.1; margin-bottom: 24px;
+    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .about-images { position: relative; height: 440px; }
+    .about-images img { position: absolute; border-radius: 12px; }
+    .img-back { width: 80%; top: 0; left: 0; opacity: .25; filter: grayscale(1); }
+    .img-front { width: 75%; bottom: 0; right: 0; border: 2px solid var(--navy-3); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .img-badge {
+      position: absolute; bottom: 60px; left: -20px;
+      background: var(--green); color: white;
+      padding: 16px 22px; border-radius: 12px;
+      font-family: 'DM Sans', system-ui, sans-serif; font-weight: 800;
+      box-shadow: 0 10px 30px rgba(16,185,129,.4);
+      z-index: 2;
+    }
+    .img-badge .big { font-size: 2rem; line-height: 1; }
+    .img-badge .small { font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: .85; }
+    .about-text p { color: var(--slate); line-height: 1.9; margin-bottom: 18px; font-size: .97rem; }
+    .about-list { list-style: none; margin: 24px 0; display: flex; flex-direction: column; gap: 12px; }
+    .about-list li { display: flex; align-items: center; gap: 12px; color: var(--slate); font-size: .9rem; }
+    .about-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+
+    /* ── CONTACT ── */
+    .contact-section { padding: 120px 7%; background: var(--navy); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; max-width: 1200px; margin: 40px auto 0; }
+    .contact-info { display: flex; flex-direction: column; gap: 32px; }
+    .contact-card {
+      display: flex; align-items: flex-start; gap: 18px;
+      padding: 24px; background: var(--navy-3);
+      border: 1px solid rgba(255,255,255,.06); border-radius: 14px;
+      transition: border-color .3s, transform .3s;
+    }
+    .contact-card:hover { border-color: var(--green); transform: translateX(6px); }
+    .contact-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(16,185,129,.12); display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .contact-card-title { font-weight: 700; font-size: .85rem; letter-spacing: .5px; margin-bottom: 4px; }
+    .contact-card-value { color: var(--slate); font-size: .9rem; line-height: 1.6; }
+
+    .contact-form-wrap { background: var(--navy-3); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 40px; }
+    .form-title { font-family: 'DM Sans', system-ui, sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 28px; }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .contact-form input,
+    .contact-form textarea {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      padding: 14px 18px; border-radius: 10px; color: white;
+      font-family: 'DM Sans', system-ui, sans-serif; font-size: .9rem;
+      transition: border-color .25s, background .25s; outline: none; width: 100%;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: var(--green); background: rgba(255,255,255,.07); }
+    .contact-form textarea { resize: vertical; min-height: 130px; }
+    .btn-send {
+      background: var(--green); color: white; border: none;
+      padding: 15px; border-radius: 10px;
+      font-weight: 700; font-size: .85rem; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: background .25s, transform .2s;
+    }
+    .btn-send:hover { background: var(--green-d); transform: translateY(-2px); }
+
+    .social-bar { display: flex; gap: 14px; margin-top: 16px; }
+    .social-link {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--navy-3); border: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--slate); text-decoration: none; font-size: .95rem;
+      transition: background .25s, color .25s, border-color .25s, transform .25s;
+    }
+    .social-link:hover { background: var(--green); color: white; border-color: var(--green); transform: translateY(-3px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-2);
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 32px 7%;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .8rem; color: var(--slate);
+    }
+    footer a { color: var(--green); text-decoration: none; }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left  { opacity: 0; transform: translateX(-40px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal-right { opacity: 0; transform: translateX(40px);  transition: opacity .7s ease, transform .7s ease; }
+    .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    @media (max-width: 768px) {
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-images { height: 280px; }
+      .stats-bar { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,.2); }
+      .stat-item:last-child { border: none; }
+      .input-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE TRANSITION OVERLAY -->
+<div id="page-overlay"></div>
+
+<!-- HEADER -->
+<header class="main-header" id="mainHeader">
+  <a href="index.html" class="logo">
+    <span class="logo-heart">❤</span>
+    <strong>Hand2Hand</strong>
+  </a>
+  <nav class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="login.html" class="nav-link-transition">Log In</a>
+    <a href="SignUp.html" class="btn-nav nav-link-transition">Sign Up</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <img src="hands.avif" alt="Charity" class="hero-img">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Tunisia's First Donation Platform</div>
+    <h2>
+      Give a Hand,<br>
+      <span class="line2">Change a Life</span>
+    </h2>
+    <p class="hero-sub">Connect generous hearts with meaningful causes across Tunisia.</p>
+    <div class="hero-actions">
+      <a href="login.html" class="btn-primary nav-link-transition">Donate Now</a>
+      <a href="#about" class="btn-ghost">Learn More</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll <span></span></div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">2,400+</div>
+    <div class="stat-label">Donations Made</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">180+</div>
+    <div class="stat-label">Associations</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">24</div>
+    <div class="stat-label">Governorates</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="about-section">
+  <div class="about-grid">
+    <div class="reveal-left">
+      <div class="about-images">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070" class="img-back" alt="">
+        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=2070" class="img-front" alt="">
+        <div class="img-badge">
+          <div class="big">5+</div>
+          <div class="small">Years of Impact</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="section-eyebrow">About Us</div>
+      <h2 class="section-title">Tunisia's Most Trusted Donation Platform</h2>
+      <p>Hand2Hand is more than a platform — it's a movement of compassion. We connect people who want to give with associations and individuals who need support.</p>
+      <p>Every item donated, every job offer posted, every connection made through our platform creates a ripple of real change across Tunisia's communities.</p>
+      <ul class="about-list">
+        <li>100% free for donors and associations</li>
+        <li>Verified associations across all 24 governorates</li>
+        <li>Transparent donation tracking from giver to recipient</li>
+        <li>Job opportunities posted by partner associations</li>
+      </ul>
+      <a href="SignUp.html" class="btn-primary nav-link-transition" style="margin-top:8px">Join the Movement</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="reveal">
+      <div class="section-eyebrow">Contact Us</div>
+      <h2 class="section-title">Let's Keep In Touch</h2>
+    </div>
+    <div class="contact-grid">
+      <!-- Info cards -->
+      <div class="contact-info reveal-left">
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-card-title">Address</div>
+            <div class="contact-card-value">Avenue de la République, Manouba 2010, Tunisia</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-card-title">Phone</div>
+            <div class="contact-card-value">+216 71 600 200</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-card-title">Email</div>
+            <div class="contact-card-value">contact@hand2hand.tn<br>support@hand2hand.tn</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <div class="contact-card-title">Working Hours</div>
+            <div class="contact-card-value">Mon – Fri: 8:00 AM – 5:00 PM<br>Saturday: 9:00 AM – 1:00 PM</div>
+          </div>
+        </div>
+        <div>
+          <div class="section-eyebrow" style="margin-bottom:12px">Follow Us</div>
+          <div class="social-bar">
+            <a href="#" class="social-link" title="Facebook">f</a>
+            <a href="#" class="social-link" title="Instagram">in</a>
+            <a href="#" class="social-link" title="LinkedIn">li</a>
+            <a href="#" class="social-link" title="Twitter">tw</a>
+          </div>
+        </div>
+      </div>
+      <!-- Form -->
+      <div class="contact-form-wrap reveal-right">
+        <div class="form-title">Send us a Message</div>
+        <form class="contact-form">
+          <div class="input-row">
+            <input type="text" placeholder="Your Name">
+            <input type="email" placeholder="Your Email">
+          </div>
+          <input type="text" placeholder="Subject">
+          <textarea placeholder="Your message..." rows="5"></textarea>
+          <button type="submit" class="btn-send">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 <a href="#">Hand2Hand</a>. All rights reserved.</span>
+  <span>Made with ❤ in Tunisia</span>
+</footer>
+
+<script>
+  // ── Header scroll effect
+  const header = document.getElementById('mainHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── Page transition
+  const overlay = document.getElementById('page-overlay');
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href]');
+    if (!link || !overlay) return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+    e.preventDefault();
+    overlay.classList.remove('exit');
+    overlay.classList.add('enter');
+    setTimeout(() => { window.location.href = href; }, 480);
+  });
+  window.addEventListener('load', () => {
+    overlay.classList.remove('enter');
+    overlay.classList.add('exit');
+    setTimeout(() => overlay.classList.remove('exit'), 460);
+  });
+</script>
+</body>
+</html>
