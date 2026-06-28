@@ -146,28 +146,6 @@ Set your preferred credentials inside the file first. Delete it after use.
 
 ---
 
-## Team
-
-Built as part of a web development project at **ISAMM, Université de la Manouba** (2024–2025).
-
-| Name | Role |
-|---|---|
-| Jihed | Lead Developer |
-| Mahoud Gharbi | Developer |
-| Tasnim Baccouri | Developer |
-| Yomna Mekni | Developer |
-| Yassmine Ben Mefteh | Developer |
-
-Supervised by **Mme. Ghofrane Kraiem**.
-
----
-
-## License
-
-This project was made for academic purposes.
-
----
-
 ## Running Locally with XAMPP
 
 **Requirements:** XAMPP installed on your machine (includes Apache + MySQL).
